@@ -30,8 +30,8 @@
   .stat-divider { display: none; }
   .stat-number { font-size: 36px; }
 
-  /* Hero visual — foto adaptada para mobile */
-  .hero-visual { height: 300px; }
+  /* Hero visual — foto no topo, antes do texto */
+  .hero-visual { height: 300px; order: -1; }
   .hero-image-container {
     position: relative;
     height: 300px;
