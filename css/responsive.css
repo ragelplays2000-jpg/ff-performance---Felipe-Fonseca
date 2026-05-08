@@ -55,6 +55,7 @@
   /* Depoimentos */
   .depo-swiper .swiper-button-prev,
   .depo-swiper .swiper-button-next { display: none; }
+  .depo-videos-grid { grid-template-columns: 1fr; }
 
   /* CTA */
   .cta-buttons { flex-direction: column; align-items: center; }

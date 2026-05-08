@@ -1,12 +1,11 @@
-// Wait for GSAP to be available
 document.addEventListener('DOMContentLoaded', function() {
   if (typeof gsap === 'undefined') return;
 
   gsap.registerPlugin(ScrollTrigger);
   if (typeof ScrollToPlugin !== 'undefined') gsap.registerPlugin(ScrollToPlugin);
 
-  // ── 1. HERO ANIMATIONS ──
-  const heroTimeline = gsap.timeline({ delay: 0.2 });
+  // ── 1. HERO ANIMATIONS (on load) ──
+  var heroTimeline = gsap.timeline({ delay: 0.2 });
 
   heroTimeline
     .from('.hero-badge', { y: 20, opacity: 0, duration: 0.6, ease: 'power3.out' })
@@ -24,9 +23,9 @@ document.addEventListener('DOMContentLoaded', function() {
     .from('.hero-stats .stat-item', { y: 20, opacity: 0, stagger: 0.1, duration: 0.5 }, '-=0.3');
 
   // ── 2. FLOATING BADGES ──
-  document.querySelectorAll('[data-float]').forEach(badge => {
-    const speed = badge.dataset.float === 'slow' ? 3 :
-                  badge.dataset.float === 'medium' ? 2 : 1.5;
+  document.querySelectorAll('[data-float]').forEach(function(badge) {
+    var speed = badge.dataset.float === 'slow' ? 3 :
+                badge.dataset.float === 'medium' ? 2 : 1.5;
     gsap.to(badge, {
       y: -12,
       duration: speed,
@@ -36,51 +35,126 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // ── 3. SCROLL REVEAL ──
-  gsap.utils.toArray('[data-gsap]').forEach(el => {
-    const type = el.dataset.gsap;
-    const delay = parseFloat(el.dataset.delay || 0);
+  // ── 3. SCROLL REVEAL GENÉRICO (data-gsap) ──
+  gsap.utils.toArray('[data-gsap]').forEach(function(el) {
+    var type = el.dataset.gsap;
+    var delay = parseFloat(el.dataset.delay || 0);
+    var fromVars = { opacity: 0, duration: 0.9, delay: delay, ease: 'power3.out' };
 
-    let fromVars = { opacity: 0, duration: 0.9, delay, ease: 'power3.out' };
+    if (type === 'fade-up')     { fromVars.y = 50; }
+    if (type === 'fade-down')   { fromVars.y = -50; }
+    if (type === 'slide-left')  { fromVars.x = -50; }
+    if (type === 'slide-right') { fromVars.x = 50; }
+    if (type === 'scale-in')    { fromVars.scale = 0.92; }
 
-    if (type === 'fade-up')     fromVars = { ...fromVars, y: 50 };
-    if (type === 'fade-down')   fromVars = { ...fromVars, y: -50 };
-    if (type === 'slide-left')  fromVars = { ...fromVars, x: -60 };
-    if (type === 'slide-right') fromVars = { ...fromVars, x: 60 };
-    if (type === 'scale-in')    fromVars = { ...fromVars, scale: 0.92 };
-
-    gsap.from(el, {
-      ...fromVars,
+    gsap.from(el, Object.assign({}, fromVars, {
       scrollTrigger: {
         trigger: el,
-        start: 'top 82%',
-        toggleActions: 'play none none none'
+        start: 'top 90%',
+        toggleActions: 'play none none none',
+        once: true
       }
-    });
+    }));
   });
 
-  // ── 4. COUNTER ANIMATION ──
-  document.querySelectorAll('.counter[data-target]').forEach(counter => {
+  // ── 4. METODOLOGIA: anima os dois cards pelo container ──
+  // Usar o container como trigger evita o bug onde overflow-x:hidden
+  // corta o card da direita enquanto ele está translateX(60px)
+  var metodologiaSplit = document.getElementById('metodologia-split');
+  if (metodologiaSplit) {
+    var cardLeft  = metodologiaSplit.querySelector('.metodo-card-left');
+    var cardRight = metodologiaSplit.querySelector('.metodo-card-right');
+
+    if (cardLeft) {
+      gsap.from(cardLeft, {
+        x: -60,
+        opacity: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: metodologiaSplit,
+          start: 'top 85%',
+          once: true
+        }
+      });
+    }
+
+    if (cardRight) {
+      gsap.from(cardRight, {
+        x: 60,
+        opacity: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: metodologiaSplit,
+          start: 'top 85%',
+          once: true
+        }
+      });
+    }
+  }
+
+  // ── 5. JORNADA: anima todos os steps pelo container ──
+  // Usar o container garante que todos os steps animem mesmo
+  // quando múltiplos já estão visíveis no viewport
+  var jornadaContainer = document.getElementById('jornada-timeline');
+  if (jornadaContainer) {
+    var steps = jornadaContainer.querySelectorAll('.timeline-step');
+    if (steps.length > 0) {
+      gsap.from(steps, {
+        y: 40,
+        opacity: 0,
+        duration: 0.7,
+        stagger: 0.18,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: jornadaContainer,
+          start: 'top 85%',
+          once: true
+        }
+      });
+    }
+
+    var connectors = jornadaContainer.querySelectorAll('.timeline-connector');
+    if (connectors.length > 0) {
+      gsap.from(connectors, {
+        scaleY: 0,
+        transformOrigin: 'top',
+        duration: 0.6,
+        stagger: 0.2,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: jornadaContainer,
+          start: 'top 85%',
+          once: true
+        }
+      });
+    }
+  }
+
+  // ── 6. COUNTER ANIMATION ──
+  document.querySelectorAll('.counter[data-target]').forEach(function(counter) {
     ScrollTrigger.create({
       trigger: counter,
-      start: 'top 85%',
+      start: 'top 90%',
       once: true,
-      onEnter: () => {
-        const target = parseInt(counter.dataset.target);
-        gsap.to({ val: 0 }, {
+      onEnter: function() {
+        var target = parseInt(counter.dataset.target);
+        var obj = { val: 0 };
+        gsap.to(obj, {
           val: target,
           duration: 2.5,
           ease: 'power2.out',
           onUpdate: function() {
-            counter.innerHTML = Math.floor(this.targets()[0].val);
+            counter.innerHTML = Math.floor(obj.val);
           }
         });
       }
     });
   });
 
-  // ── 5. PARALLAX GLOWS ──
-  gsap.utils.toArray('.glow').forEach((glow, i) => {
+  // ── 7. PARALLAX GLOWS ──
+  gsap.utils.toArray('.glow').forEach(function(glow, i) {
     gsap.to(glow, {
       y: i % 2 === 0 ? -80 : 80,
       ease: 'none',
@@ -93,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // ── 6. HERO IMAGE PARALLAX ──
+  // ── 8. HERO IMAGE PARALLAX ──
   if (document.querySelector('.hero-image')) {
     gsap.to('.hero-image', {
       y: 40,
@@ -107,79 +181,41 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // ── 7. PLAN CARDS 3D TILT ──
-  document.querySelectorAll('.plan-card').forEach(card => {
-    card.addEventListener('mousemove', e => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const rotateX = (y - centerY) / 18;
-      const rotateY = (centerX - x) / 18;
-
-      gsap.to(card, {
-        rotateX,
-        rotateY,
-        transformPerspective: 1000,
-        duration: 0.3,
-        ease: 'power1.out'
-      });
-    });
-
-    card.addEventListener('mouseleave', () => {
-      gsap.to(card, {
-        rotateX: 0,
-        rotateY: 0,
-        duration: 0.5,
-        ease: 'power2.out'
-      });
-    });
-  });
-
-  // ── 8. TIMELINE CONNECTORS ──
-  gsap.from('.timeline-connector', {
-    scaleY: 0,
-    transformOrigin: 'top',
-    stagger: 0.3,
-    duration: 0.6,
-    ease: 'power2.out',
-    scrollTrigger: {
-      trigger: '.timeline',
-      start: 'top 70%',
-      toggleActions: 'play none none none'
-    }
-  });
-
-  // ── 9. SECTION LABELS ──
-  gsap.utils.toArray('.section-label').forEach(label => {
-    gsap.from(label, {
-      x: -20,
-      opacity: 0,
-      duration: 0.6,
-      scrollTrigger: {
-        trigger: label,
-        start: 'top 85%'
-      }
-    });
-  });
-
-  // ── 10. GLASS CARDS STAGGER ──
-  const cardGroups = document.querySelectorAll('.metodologia-split, .sobre-list, .timeline');
-  cardGroups.forEach(group => {
-    const cards = group.querySelectorAll('.glass-card, li');
-    if (cards.length > 1) {
-      gsap.from(cards, {
-        y: 30,
-        opacity: 0,
-        stagger: 0.15,
-        duration: 0.7,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: group,
-          start: 'top 80%'
-        }
+  // ── 9. SOBRE GRID ──
+  var sobreGrid = document.querySelector('.sobre-grid');
+  if (sobreGrid) {
+    var sobreVisual  = sobreGrid.querySelector('.sobre-visual');
+    var sobreContent = sobreGrid.querySelector('.sobre-content');
+    if (sobreVisual) {
+      gsap.from(sobreVisual, {
+        x: -60, opacity: 0, duration: 0.9, ease: 'power3.out',
+        scrollTrigger: { trigger: sobreGrid, start: 'top 85%', once: true }
       });
     }
+    if (sobreContent) {
+      gsap.from(sobreContent, {
+        x: 60, opacity: 0, duration: 0.9, ease: 'power3.out',
+        scrollTrigger: { trigger: sobreGrid, start: 'top 85%', once: true }
+      });
+    }
+  }
+
+  // ── 10. PLAN CARDS 3D TILT ──
+  document.querySelectorAll('.plan-card').forEach(function(card) {
+    card.addEventListener('mousemove', function(e) {
+      var rect = card.getBoundingClientRect();
+      var rotateX = (e.clientY - rect.top - rect.height / 2) / 18;
+      var rotateY = (rect.left + rect.width / 2 - e.clientX) / 18;
+      gsap.to(card, { rotateX: rotateX, rotateY: rotateY, transformPerspective: 1000, duration: 0.3, ease: 'power1.out' });
+    });
+    card.addEventListener('mouseleave', function() {
+      gsap.to(card, { rotateX: 0, rotateY: 0, duration: 0.5, ease: 'power2.out' });
+    });
   });
+
+  // ── 11. REDUCED MOTION ──
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    gsap.globalTimeline.timeScale(100);
+    ScrollTrigger.getAll().forEach(function(st) { st.kill(); });
+  }
 });
