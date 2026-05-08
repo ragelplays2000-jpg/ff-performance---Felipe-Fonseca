@@ -182,19 +182,17 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // ── 9. SOBRE GRID ──
+  // ── 9. SOBRE GRID: anima pelo container para evitar conflito ──
   var sobreGrid = document.querySelector('.sobre-grid');
   if (sobreGrid) {
-    var sobreVisual  = sobreGrid.querySelector('.sobre-visual');
-    var sobreContent = sobreGrid.querySelector('.sobre-content');
-    if (sobreVisual) {
-      gsap.from(sobreVisual, {
-        x: -60, opacity: 0, duration: 0.9, ease: 'power3.out',
-        scrollTrigger: { trigger: sobreGrid, start: 'top 85%', once: true }
-      });
-    }
-    if (sobreContent) {
-      gsap.from(sobreContent, {
-        x: 60, opacity: 0, duration: 0.9, ease: 'power3.out',
+    var sobreItems = sobreGrid.querySelectorAll('.sobre-visual, .sobre-content');
+    if (sobreItems.length > 0) {
+      gsap.from(sobreItems, {
+        y: 40,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: 'power3.out',
         scrollTrigger: { trigger: sobreGrid, start: 'top 85%', once: true }
       });
     }

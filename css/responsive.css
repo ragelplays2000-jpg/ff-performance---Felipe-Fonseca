@@ -21,8 +21,7 @@
   .hamburger { display: flex; }
 
   /* Hero */
-  .hero-container { grid-template-columns: 1fr; gap: 40px; padding: 40px 0 20px; }
-  .hero-visual { display: none; }
+  .hero-container { grid-template-columns: 1fr; gap: 32px; padding: 32px 0 20px; }
   .hero-title { font-size: clamp(52px, 15vw, 80px); }
   .hero-ctas { flex-direction: column; }
   .hero-ctas .btn { width: 100%; justify-content: center; }
@@ -30,6 +29,17 @@
   .stat-item { min-width: 40%; }
   .stat-divider { display: none; }
   .stat-number { font-size: 36px; }
+
+  /* Hero visual — foto adaptada para mobile */
+  .hero-visual { height: 300px; }
+  .hero-image-container {
+    position: relative;
+    height: 300px;
+    border-radius: var(--radius-lg);
+  }
+  .hero-image { object-position: center 20%; }
+  .floating-badge { display: none; }
+  .hero-seal { display: none; }
 
   /* Sobre */
   .sobre-grid { grid-template-columns: 1fr; gap: 40px; }
