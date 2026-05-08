@@ -5,7 +5,11 @@ document.addEventListener('DOMContentLoaded', function() {
   if (typeof ScrollToPlugin !== 'undefined') gsap.registerPlugin(ScrollToPlugin);
 
   // ── 1. HERO ANIMATIONS (on load) ──
-  var heroTimeline = gsap.timeline({ delay: 0.2 });
+  var heroFallbackTimer;
+  var heroTimeline = gsap.timeline({
+    delay: 0.2,
+    onComplete: function() { clearTimeout(heroFallbackTimer); }
+  });
 
   heroTimeline
     .from('.hero-badge', { y: 20, opacity: 0, duration: 0.6, ease: 'power3.out' })
@@ -21,6 +25,12 @@ document.addEventListener('DOMContentLoaded', function() {
     .from('.hero-proof', { y: 20, opacity: 0, duration: 0.5 }, '-=0.2')
     .from('.hero-visual', { x: 60, opacity: 0, duration: 1, ease: 'power3.out' }, '-=0.8')
     .from('.hero-stats .stat-item', { y: 20, opacity: 0, stagger: 0.1, duration: 0.5 }, '-=0.3');
+
+  // Fallback: se animações travarem no mobile (throttling do browser), força visibilidade
+  heroFallbackTimer = setTimeout(function() {
+    gsap.set('.hero-badge, .title-line, .hero-subtitle, .hero-ctas, .hero-proof, .hero-visual, .hero-stats .stat-item', { clearProps: 'all' });
+    gsap.set('[data-gsap]', { clearProps: 'all' });
+  }, 5000);
 
   // ── 2. FLOATING BADGES ──
   document.querySelectorAll('[data-float]').forEach(function(badge) {

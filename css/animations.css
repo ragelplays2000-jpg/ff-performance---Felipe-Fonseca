@@ -87,3 +87,17 @@
 
 /* ── 3D TILT CARDS ── */
 .plan-card { transform-style: preserve-3d; }
+
+/* ── FALLBACK: quando GSAP não carrega (CDN falhou no mobile) ── */
+.no-gsap .hero-badge,
+.no-gsap .title-line,
+.no-gsap .hero-subtitle,
+.no-gsap .hero-ctas,
+.no-gsap .hero-proof,
+.no-gsap .hero-visual,
+.no-gsap .hero-stats .stat-item,
+.no-gsap [data-gsap] {
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
+}
