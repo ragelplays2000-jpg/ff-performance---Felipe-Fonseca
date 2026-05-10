@@ -227,23 +227,4 @@ document.addEventListener('DOMContentLoaded', function() {
     ScrollTrigger.getAll().forEach(function(st) { st.kill(); });
   }
 
-  // ── 12. FEEDBACKS: stagger fade-up dos cards ──
-  var feedbacksGrid = document.getElementById('feedbacks-grid');
-  if (feedbacksGrid) {
-    var feedbackCards = feedbacksGrid.querySelectorAll('.feedback-card');
-    if (feedbackCards.length > 0) {
-      gsap.from(feedbackCards, {
-        y: 50,
-        opacity: 0,
-        duration: 0.7,
-        stagger: 0.12,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: feedbacksGrid,
-          start: 'top 85%',
-          once: true
-        }
-      });
-    }
-  }
 });
