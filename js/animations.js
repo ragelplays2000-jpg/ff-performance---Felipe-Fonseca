@@ -227,27 +227,7 @@ document.addEventListener('DOMContentLoaded', function() {
     ScrollTrigger.getAll().forEach(function(st) { st.kill(); });
   }
 
-  // ── 12. PRA QUEM É: stagger slide-in dos itens ──
-  var praQuemGrid = document.getElementById('pra-quem-grid');
-  if (praQuemGrid) {
-    var praQuemItems = praQuemGrid.querySelectorAll('.pra-quem-item');
-    if (praQuemItems.length > 0) {
-      gsap.from(praQuemItems, {
-        x: -40,
-        opacity: 0,
-        duration: 0.6,
-        stagger: 0.08,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: praQuemGrid,
-          start: 'top 85%',
-          once: true
-        }
-      });
-    }
-  }
-
-  // ── 13. FEEDBACKS: stagger fade-up dos cards ──
+  // ── 12. FEEDBACKS: stagger fade-up dos cards ──
   var feedbacksGrid = document.getElementById('feedbacks-grid');
   if (feedbacksGrid) {
     var feedbackCards = feedbacksGrid.querySelectorAll('.feedback-card');
