@@ -435,6 +435,42 @@ img { max-width: 100%; display: block; }
 }
 .feedbacks-cta p { color: var(--white); font-size: 20px; font-weight: 500; margin-bottom: 24px; }
 
+/* Feedbacks subsections */
+.feedbacks-subsection { margin-bottom: 56px; }
+.feedbacks-subsection .feedbacks-grid { margin-bottom: 0; }
+.feedbacks-subtitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 28px;
+  padding: 10px 20px;
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: var(--radius-pill);
+}
+
+/* WhatsApp cards — conteúdo completo visível */
+.feedbacks-grid-depo { grid-template-columns: repeat(3, 1fr); }
+.whatsapp-wrapper {
+  aspect-ratio: 9/16;
+  background: #f0f2f5;
+  border-color: rgba(212, 175, 55, 0.2);
+}
+.whatsapp-wrapper img { object-fit: contain; }
+
+@media (max-width: 1024px) {
+  .feedbacks-grid-depo { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 768px) {
+  .feedbacks-grid-depo { grid-template-columns: 1fr; }
+  .feedbacks-subtitle { font-size: 14px; padding: 8px 16px; }
+  .feedbacks-subsection { margin-bottom: 40px; }
+}
+
 /* ── SOBRE SAÚDE ── */
 .sobre-saude {
   background: rgba(212, 175, 55, 0.05);
