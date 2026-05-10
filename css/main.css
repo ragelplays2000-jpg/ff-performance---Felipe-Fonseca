@@ -350,3 +350,107 @@ img { max-width: 100%; display: block; }
 .depo-video-titulo { color: var(--white-70); font-size: 15px; font-style: italic; line-height: 1.5; }
 .depo-coming { text-align: center; margin-top: 32px; }
 .depo-coming p { color: var(--white-50); font-size: 14px; background: rgba(212,175,55,0.05); border: 1px solid rgba(212,175,55,0.1); border-radius: var(--radius-pill); display: inline-block; padding: 10px 24px; }
+
+/* ── PRA QUEM É ── */
+.pra-quem-section { background: var(--black); }
+.pra-quem-content { max-width: 800px; margin: 0 auto; }
+.pra-quem-intro { padding: 32px; text-align: center; margin-bottom: 40px; }
+.pra-quem-intro h3 { color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 24px; font-weight: 600; margin: 0; }
+.pra-quem-grid { display: flex; flex-direction: column; gap: 16px; margin-bottom: 60px; }
+.pra-quem-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  background: rgba(212, 175, 55, 0.05);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  transition: var(--transition);
+}
+.pra-quem-item:hover { background: rgba(212, 175, 55, 0.1); transform: translateX(8px); border-left-width: 4px; }
+.item-bullet { color: var(--gold); font-size: 24px; font-weight: 700; line-height: 1; min-width: 12px; flex-shrink: 0; }
+.pra-quem-item span:last-child { color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 400; line-height: 1.4; }
+.pra-quem-footer {
+  text-align: center;
+  padding: 40px 32px;
+  background: rgba(20, 20, 20, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+}
+.pra-quem-footer p { color: var(--white-70); font-size: 16px; margin-bottom: 24px; }
+.pra-quem-footer strong { color: var(--white); }
+
+/* ── FEEDBACKS E CONQUISTAS ── */
+.feedbacks-section { background: linear-gradient(180deg, #0a0a0a 0%, #141414 100%); }
+.feedbacks-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 60px;
+}
+.feedback-card { position: relative; overflow: hidden; border-radius: var(--radius-lg); transition: var(--transition); }
+.feedback-card:hover { transform: translateY(-8px); }
+.feedback-image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/5;
+  overflow: hidden;
+  background: radial-gradient(circle at center, rgba(212,175,55,0.06) 0%, var(--black-card) 65%);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+}
+.smartphone-card { justify-self: center; max-width: 360px; width: 100%; }
+.smartphone-frame {
+  aspect-ratio: 9/19.5;
+  border-radius: 24px;
+  border: 8px solid #1a1a1a;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.3), 0 20px 60px rgba(0,0,0,0.5);
+}
+.feedback-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
+}
+.feedback-card:hover .feedback-image-wrapper img { transform: scale(1.08); }
+.feedback-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 20px;
+  background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 60%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.feedback-card:hover .feedback-overlay { opacity: 1; }
+.feedback-label { color: var(--gold); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; }
+.feedbacks-cta {
+  text-align: center;
+  padding: 48px 32px;
+  background: rgba(212, 175, 55, 0.08);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+.feedbacks-cta p { color: var(--white); font-size: 20px; font-weight: 500; margin-bottom: 24px; }
+
+/* ── SOBRE SAÚDE ── */
+.sobre-saude {
+  background: rgba(212, 175, 55, 0.05);
+  padding: 20px 24px;
+  border-left: 3px solid var(--gold);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  margin-top: 24px;
+}
+.sobre-saude strong { color: var(--gold); }
+
+@media (max-width: 768px) {
+  .pra-quem-item { padding: 16px 20px; }
+  .pra-quem-item span:last-child { font-size: 15px; }
+  .pra-quem-footer { padding: 32px 24px; }
+  .feedbacks-grid { grid-template-columns: 1fr; gap: 20px; }
+  .smartphone-card { max-width: 300px; }
+  .feedbacks-cta { padding: 40px 24px; }
+  .feedbacks-cta p { font-size: 18px; }
+}

@@ -5,6 +5,7 @@
   .sobre-grid { gap: 48px; }
   .footer-container { grid-template-columns: 1fr 1fr; }
   .footer-brand { grid-column: 1 / -1; }
+  .feedbacks-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* ── MOBILE (max 768px) ── */
