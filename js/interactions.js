@@ -112,14 +112,10 @@ document.addEventListener('DOMContentLoaded', function() {
       const target = document.querySelector(targetId);
       if (!target) return;
 
-      const headerH = document.getElementById('header')?.offsetHeight || 80;
+      const headerH = document.getElementById('header')?.offsetHeight || 70;
       const targetPos = target.getBoundingClientRect().top + window.pageYOffset - headerH;
 
-      if (typeof gsap !== 'undefined' && typeof ScrollToPlugin !== 'undefined') {
-        gsap.to(window, { duration: 1, scrollTo: { y: targetPos }, ease: 'power3.inOut' });
-      } else {
-        window.scrollTo({ top: targetPos, behavior: 'smooth' });
-      }
+      window.scrollTo({ top: targetPos, behavior: 'smooth' });
     });
   });
 

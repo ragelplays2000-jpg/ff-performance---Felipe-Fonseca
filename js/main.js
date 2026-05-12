@@ -43,12 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // ── 4. REDUCED MOTION ──
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    if (typeof gsap !== 'undefined') {
-      gsap.globalTimeline.timeScale(100);
-    }
-  }
+  // reduced-motion is handled in animations.js
 
   // ── 5. LAZY LOAD IMAGES ──
   if ('IntersectionObserver' in window) {

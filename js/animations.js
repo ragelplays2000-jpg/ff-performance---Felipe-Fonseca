@@ -4,6 +4,16 @@ document.addEventListener('DOMContentLoaded', function() {
   gsap.registerPlugin(ScrollTrigger);
   if (typeof ScrollToPlugin !== 'undefined') gsap.registerPlugin(ScrollToPlugin);
 
+  // Se o usuário ativou reduced-motion (comum em celulares com economia de bateria),
+  // mostra tudo imediatamente sem animações e encerra — evita tela em branco.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    gsap.set(
+      '.hero-badge, .title-line, .hero-subtitle, .hero-ctas, .hero-proof, .hero-visual, .hero-stats .stat-item, [data-gsap]',
+      { opacity: 1, y: 0, x: 0, scale: 1, clearProps: 'all' }
+    );
+    return;
+  }
+
   // ── 1. HERO ANIMATIONS (on load) ──
   var heroFallbackTimer;
   var heroTimeline = gsap.timeline({
@@ -30,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
   heroFallbackTimer = setTimeout(function() {
     gsap.set('.hero-badge, .title-line, .hero-subtitle, .hero-ctas, .hero-proof, .hero-visual, .hero-stats .stat-item', { clearProps: 'all' });
     gsap.set('[data-gsap]', { clearProps: 'all' });
-  }, 5000);
+  }, 2000);
 
   // ── 2. FLOATING BADGES ──
   document.querySelectorAll('[data-float]').forEach(function(badge) {
@@ -221,10 +231,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // ── 11. REDUCED MOTION ──
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    gsap.globalTimeline.timeScale(100);
-    ScrollTrigger.getAll().forEach(function(st) { st.kill(); });
-  }
-
 });
+
