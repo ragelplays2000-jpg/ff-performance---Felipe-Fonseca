@@ -153,25 +153,47 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // ── 6. COUNTER ANIMATION ──
-  document.querySelectorAll('.counter[data-target]').forEach(function(counter) {
-    ScrollTrigger.create({
-      trigger: counter,
-      start: 'top 90%',
-      once: true,
-      onEnter: function() {
-        var target = parseInt(counter.dataset.target);
-        var obj = { val: 0 };
-        gsap.to(obj, {
-          val: target,
-          duration: 2.5,
-          ease: 'power2.out',
-          onUpdate: function() {
-            counter.innerHTML = Math.floor(obj.val);
-          }
-        });
+  // Usa IntersectionObserver em vez de ScrollTrigger porque os contadores ficam
+  // no hero (sempre visíveis ao carregar). Em PCs lentos, o ScrollTrigger pode
+  // não disparar onEnter para elementos já no viewport quando inicializa.
+  // O IntersectionObserver é nativo do browser e detecta isso de forma confiável.
+  function animateCounter(counter) {
+    if (counter.dataset.animated) return;
+    counter.dataset.animated = '1';
+    var target = parseInt(counter.dataset.target);
+    var obj = { val: 0 };
+    gsap.to(obj, {
+      val: target,
+      duration: 2.5,
+      ease: 'power2.out',
+      onUpdate: function() {
+        counter.innerHTML = Math.floor(obj.val);
       }
     });
-  });
+  }
+
+  var counterEls = document.querySelectorAll('.counter[data-target]');
+
+  if ('IntersectionObserver' in window) {
+    var counterObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          animateCounter(entry.target);
+          counterObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    counterEls.forEach(function(counter) { counterObserver.observe(counter); });
+  } else {
+    counterEls.forEach(function(counter) {
+      ScrollTrigger.create({
+        trigger: counter,
+        start: 'top 90%',
+        once: true,
+        onEnter: function() { animateCounter(counter); }
+      });
+    });
+  }
 
   // ── 7. PARALLAX GLOWS ──
   gsap.utils.toArray('.glow').forEach(function(glow, i) {
